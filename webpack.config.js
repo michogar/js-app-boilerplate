@@ -11,6 +11,16 @@ module.exports = env => {
     },
     devtool: 'inline-source-map',
     module: {
+      rules: [{
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      }, {
+        test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000
+        }
+      }],
       loaders: [{
         test: /\.js$/,
         exclude: /node_modules/,
@@ -31,10 +41,9 @@ module.exports = env => {
     },
     resolve: {
       alias: {
-        '@csgis/di': path.resolve('./node_modules/@csgis/di'),
-        'jquery': path.resolve('./node_modules/jquery')
+        '@csgis/di': path.resolve('./node_modules/@csgis/di')
       }
     },
-    plugins: PROD ?  [new UglifyJSPlugin()] : []
+    plugins: PROD ? [new UglifyJSPlugin()] : []
   };
 };
