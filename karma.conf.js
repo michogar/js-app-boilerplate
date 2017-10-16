@@ -9,7 +9,7 @@ module.exports = function c(config) {
       'src/*.js': ['webpack', 'sourcemap', 'coverage'],
       'test/*.js': ['webpack', 'sourcemap']
     },
-    reporters: ['progress', 'coverage'],
+    reporters: ['progress', 'coverage', 'junit'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
@@ -21,6 +21,11 @@ module.exports = function c(config) {
     webpackMiddleware: {
       noInfo: true
     },
+    junitReporter: {
+      outputDir: 'shippable/testresults',
+      outputFile: 'tests.xml',
+      useBrowserName: false
+    },
     coverageReporter: {
       dir: 'coverage',
       reporters: [{
@@ -29,6 +34,9 @@ module.exports = function c(config) {
       }, {
         type: 'lcov',
         subdir: 'lcov'
+      }, {
+        type: 'cobertura',
+        subdir: 'xml'
       }]
     }
   });

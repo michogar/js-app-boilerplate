@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+  - "node"
+services:
+  - selenium
+env:
+  - secure:
+build:
+  ci:
+    - "export DISPLAY=:99.0"
+    - npm install
+    - xvfb-run --server-args="-ac" npm test
+  post_ci:
+    - mkdir -p shippable/codecoverage
+    - cp coverage/xml/* shippable/codecoverage
+    - npm run coverage
