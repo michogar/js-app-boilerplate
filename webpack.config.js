@@ -1,12 +1,21 @@
-var path = require('path');
-var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+let path = require('path');
+let UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+let CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = env => {
-  var PROD = env && env.production;
+  let plugins = [new CopyWebpackPlugin([
+    { from: 'index.html' },
+    { from: 'README.md' },
+    { from: 'package.json' }
+  ])];
+
+  let PROD = env && env.production;
+  if (PROD) plugins.push(new UglifyJSPlugin());
+
   return {
     entry: './src/main.js',
     output: {
-      path: __dirname,
+      path: path.join(__dirname, 'dist'),
       filename: './bundle.js'
     },
     devtool: 'inline-source-map',
@@ -44,6 +53,6 @@ module.exports = env => {
         '@csgis/di': path.resolve('./node_modules/@csgis/di')
       }
     },
-    plugins: PROD ? [new UglifyJSPlugin()] : []
+    plugins
   };
 };
